@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/new/statusIcons">
+        <file>erledigt.png</file>
+        <file>offen.png</file>
+        <file>na.png</file>
+        <file>mes.png</file>
+    </qresource>
+</RCC>
