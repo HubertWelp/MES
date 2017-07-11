@@ -4,7 +4,7 @@
 #include "auftragsverwaltung.h"
 #include <QObject>
 
-class MESMQTTNode : public QObject, public MQTTNode
+class MESMQTTNode : public QObject
 {
     Q_OBJECT
 public:
@@ -22,7 +22,7 @@ private:
     static void bearbeiteTopic(char* m, int l);
     static void bearbeiteTopic3(char* m, int l);
     static void bearbeiteTopic4(char* m, int l);
-
+    static MQTTNode mqttNode;
 };
 
 #endif // MESMQTTNODE_H

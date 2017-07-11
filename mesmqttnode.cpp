@@ -9,24 +9,24 @@ using namespace std;
 #define TOPIC3 "RFID3/Tagdaten"
 #define TOPIC4 "RFID4/Tagdaten"
 Auftragsverwaltung* MESMQTTNode::auftraege=NULL;
-
+MQTTNode MESMQTTNode::mqttNode;
 MESMQTTNode::MESMQTTNode(Auftragsverwaltung* av, QObject* parent)
     :    QObject(parent)
 {
     auftraege=av;
-    setMsgRcvdCallback(mqttMessageHandler);
-    subscribe(TOPIC1);
-    subscribe(TOPIC2);
-    subscribe(TOPIC3);
-    subscribe(TOPIC4);
+    mqttNode.setMsgRcvdCallback(mqttMessageHandler);
+    mqttNode.subscribe(TOPIC1);
+    mqttNode.subscribe(TOPIC2);
+    mqttNode.subscribe(TOPIC3);
+    mqttNode.subscribe(TOPIC4);
     connect(auftraege,SIGNAL(beauftragt(int)),this,SLOT(beauftragungStarten(int)));
 }
 MESMQTTNode::~MESMQTTNode()
 {
-    unsubscribe(TOPIC1);
-    unsubscribe(TOPIC2);
-    unsubscribe(TOPIC3);
-    unsubscribe(TOPIC4);
+    mqttNode.unsubscribe(TOPIC1);
+    mqttNode.unsubscribe(TOPIC2);
+    mqttNode.unsubscribe(TOPIC3);
+    mqttNode.unsubscribe(TOPIC4);
 }
 void MESMQTTNode::mqttMessageHandler(char* t, char* m, int l)
 {
@@ -104,7 +104,7 @@ void MESMQTTNode::beauftragungStarten(int auftragsIndex)
 
         cout << "beauftragungStarten::message: " << message << endl;
 
-        publish("MES/Command/RFID1",message,strlen(message));
+        mqttNode.publish("MES/Command/RFID1",message,strlen(message));
     }
 }
 
@@ -350,7 +350,7 @@ void MESMQTTNode::bearbeiteTopic4(char *m, int l)
         char message[10000]="";
         strcpy(message,"puon");   // Message-Typ
         cout << "beauftragungStarten::message: " << message << endl;
-        publish("MES/Command/RFID4",message,strlen(message));
+        mqttNode.publish("MES/Command/RFID4",message,strlen(message));
 
         return;
     }
@@ -368,6 +368,7 @@ void MESMQTTNode::bearbeiteTopic4(char *m, int l)
             QString meldung;
             meldung = QString("Ungültiger Bearbeitungsszustand zum Versenden\nVerarbeitung abgebrochen.");
             cout <<  meldung.toStdString() << endl;
+            auftraege->setFehlerZustand(meldung);
             return;
         }
 
@@ -376,7 +377,7 @@ void MESMQTTNode::bearbeiteTopic4(char *m, int l)
         char message[10000]="";
         strcpy(message,"puoff");   // Message-Typ
         cout << "beauftragungStarten::message: " << message << endl;
-        publish("MES/Command/RFID4",message,strlen(message));
+        mqttNode.publish("MES/Command/RFID4",message,strlen(message));
 
     // 3. Schicke write-Nachricht mit neuen Versendet-Status
         cout << "Bestehenden Auftrag aufdatieren " << endl;
@@ -395,7 +396,7 @@ void MESMQTTNode::bearbeiteTopic4(char *m, int l)
         // +8 und -8 w.g. wa, d.h. TagID darf nicht in Message enthalten sein
         byteStreamToHexString(message+2,(const unsigned char*)&tagData+8,sizeof(tagData)-8);
         cout << "beauftragungStarten::message: " << message << endl;
-        publish("MES/Command/RFID4",message,strlen(message));
+        mqttNode.publish("MES/Command/RFID4",message,strlen(message));
     }
 
 }
