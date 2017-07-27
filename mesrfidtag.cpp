@@ -19,7 +19,7 @@ RFIDTag& MESRFIDTag::fromFertigungsauftrag(Fertigungsauftrag fa)
         {
             fatd.bohrDaten.durchmesser = 5.0;
             fatd.bohrDaten.x = 105.0;
-            fatd.bohrDaten.y = 20.0;
+            fatd.bohrDaten.y = 280.0;
         }else
         {
             fatd.bohrDaten.durchmesser = 5.0;
@@ -34,17 +34,18 @@ RFIDTag& MESRFIDTag::fromFertigungsauftrag(Fertigungsauftrag fa)
         {
             strcpy(fatd.fraesDaten.gravurtext,fa.getProduktbeschreibung().getGravurtext().c_str());
             fatd.fraesDaten.hochFormat = true;
-            fatd.fraesDaten.x = 10.5;
-            fatd.fraesDaten.y = 14.9-0.25*strlen(fatd.fraesDaten.gravurtext);
+            fatd.fraesDaten.x = 105.0-7.5*strlen(fatd.fraesDaten.gravurtext);
+            fatd.fraesDaten.y = 149.0;
         }else
         {
             strcpy(fatd.fraesDaten.gravurtext,fa.getProduktbeschreibung().getGravurtext().c_str());
             fatd.fraesDaten.hochFormat = false;
-            fatd.fraesDaten.x = 10.5-0.25*strlen(fatd.fraesDaten.gravurtext);
-            fatd.fraesDaten.y = 14.9;
+            fatd.fraesDaten.x = 105.0;
+            fatd.fraesDaten.y = 149.0+7.5*strlen(fatd.fraesDaten.gravurtext);
         }
 
     }
+    cout << "fraesdaten.x=" << fatd.fraesDaten.x << "fatd.fraesDaten.y=" << fatd.fraesDaten.y << endl;
     unsigned long long id = fa.getRFIDNr();
     memcpy(&this->id,&id,8);
     memcpy(&this->userdata,&fatd,sizeof(fatd));

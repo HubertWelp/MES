@@ -1,6 +1,8 @@
 #include "mesmqttnode.h"
 #include <iostream>
 #include <QMessageBox>
+#include <QTime>
+#include <QCoreApplication>
 using namespace std;
 #include "mesrfidtag.h"
 #include "bearbeitungsstatus.h"
@@ -73,12 +75,17 @@ int hexStringToByteStream(unsigned char* byte, const char* hex, int len)
     return n;
 }
 
+void delay(int ms)
+{
+    QTime dieTime= QTime::currentTime().addMSecs(ms);
+    while (QTime::currentTime() < dieTime)
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+}
 
 void MESMQTTNode::beauftragungStarten(int auftragsIndex)
 {
     char message[10000];
     int msgLen;
-
     // Nachricht zum Schreiben des RFID-Sensor 1 verschicken
     if(auftragsIndex!=-1 && auftraege)
     {
@@ -376,7 +383,7 @@ void MESMQTTNode::bearbeiteTopic4(char *m, int l)
         // schicke push-on-Nachricht an RFID4
         char message[10000]="";
         strcpy(message,"puoff");   // Message-Typ
-        cout << "beauftragungStarten::message: " << message << endl;
+        cout << "bearbeiteTopic4::message: " << message << endl;
         mqttNode.publish("MES/Command/RFID4",message,strlen(message));
 
     // 3. Schicke write-Nachricht mit neuen Versendet-Status
@@ -395,7 +402,7 @@ void MESMQTTNode::bearbeiteTopic4(char *m, int l)
         // Tagdaten von binär nach hexstring wandeln
         // +8 und -8 w.g. wa, d.h. TagID darf nicht in Message enthalten sein
         byteStreamToHexString(message+2,(const unsigned char*)&tagData+8,sizeof(tagData)-8);
-        cout << "beauftragungStarten::message: " << message << endl;
+        cout << "bearbeiteTopic4::message: " << message << endl;
         mqttNode.publish("MES/Command/RFID4",message,strlen(message));
     }
 

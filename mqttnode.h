@@ -3,8 +3,8 @@
 
 #include "MQTTClient.h"
 
-//#define ADDRESS     "tcp://192.168.77.253:1883"
-#define ADDRESS     "tcp://127.0.0.1:1883"
+#define ADDRESS     "tcp://192.168.77.253:1883"
+//#define ADDRESS     "tcp://127.0.0.1:1883"
 #define CLIENTID    "MES"
 #define TOPIC       "welp"
 #define PAYLOAD     "Hello World!"
