@@ -34,14 +34,14 @@ RFIDTag& MESRFIDTag::fromFertigungsauftrag(Fertigungsauftrag fa)
         {
             strcpy(fatd.fraesDaten.gravurtext,fa.getProduktbeschreibung().getGravurtext().c_str());
             fatd.fraesDaten.hochFormat = true;
-            fatd.fraesDaten.x = 105.0-5.0*strlen(fatd.fraesDaten.gravurtext);
+            fatd.fraesDaten.x = 105.0-0.0*strlen(fatd.fraesDaten.gravurtext);
             fatd.fraesDaten.y = 149.0;
         }else
         {
             strcpy(fatd.fraesDaten.gravurtext,fa.getProduktbeschreibung().getGravurtext().c_str());
             fatd.fraesDaten.hochFormat = false;
             fatd.fraesDaten.x = 105.0;
-            fatd.fraesDaten.y = 149.0+7.5*strlen(fatd.fraesDaten.gravurtext);
+            fatd.fraesDaten.y = 149.0+0.0*strlen(fatd.fraesDaten.gravurtext);
         }
 
     }
