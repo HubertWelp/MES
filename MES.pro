@@ -41,6 +41,11 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     mes.qrc
-INCLUDEPATH += D:\\Vorlesungen\\SWT-SP1\\Prototyping\\MQTT\\inc
-LIBS += -LD:\\Vorlesungen\\SWT-SP1\\Prototyping\\MQTT\\lib \
-        libpaho-mqtt3c.dll
+#INCLUDEPATH += D:\\Vorlesungen\\SWT-SP1\\Prototyping\\MQTT\\inc
+#LIBS += -LD:\\Vorlesungen\\SWT-SP1\\Prototyping\\MQTT\\lib \
+#        libpaho-mqtt3c.dll
+INCLUDEPATH += .\\inc
+#LIBS += -LD:\\Vorlesungen\\DN\\DN7-IoT\\MES\\lib \
+#        libpaho-mqtt3c.dll
+LIBS += -L$$PWD\\lib  \
+         libpaho-mqtt3c.dll
